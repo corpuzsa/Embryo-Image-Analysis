@@ -34,7 +34,6 @@ for file_name in glob.iglob(os.path.join(org_dir, "*" + ext)):
     save_dir = '/Users/christinembramos/Desktop/Embryo Image Analysis/Augmented/MirroredFrames'
     file_pathY = os.path.join(save_dir, file_nameY)
     file_pathX = os.path.join(save_dir, file_nameX)
-    print(file_pathY)
     imgY.save(file_pathY)
     imgX.save(file_pathX)
         
