@@ -4,12 +4,12 @@ isGray = 1; %0 if not grayscale images, 1 for grayscale images
 startFrameNumber = 0; %how many frames before the frame you start renaming
 w = startFrameNumber;
 degrees = 90; %degrees
-widthlength = 256; %size of the resized image
+widthlength = 496; %size of the resized image
 mirror = 0; %mirror over y axis = 1; mirror over x axis = 2; no mirror = 0
 combine = 0; %combines two images to create two new different images
 crop = 0;
-originalpath = 'C:\Users\Joel\Desktop\SPRING 2020\EE 496\Neural Network Training\OriginalImages_Mouse4981_Mouse5201\';
-newpath = 'C:\Users\Joel\Desktop\SPRING 2020\EE 496\Neural Network Training\Augmented Original Images\';
+originalpath = 'C:\Users\Mina Chang\Desktop\VIP\Data Set\Images_496x496\';
+newpath = 'C:\Users\Mina Chang\Desktop\VIP\Data Set\Rotated\';
 
 type = 'Labels';
 if(isImage == 1)
@@ -41,21 +41,23 @@ for k = 1:length(files)
     end
     if(degrees ~= 0)
         Image = imrotate(Image, degrees);
-        Image = label2rgb(Image);
-        [r, c, ~] = size(Image);
-        val1 = Image(1,1,1);
-        val2 = Image(1,1,2);
-        val3 = Image(1,1,3);
-        for p = 1:r
-            for l = 1:c
-                if(Image(p,l,1) == val1 && Image(p,l,2) == val2 && Image(p,l,3) == val3)
-                    Image(p,l,1) = 0;
-                    Image(p,l,2) = 0;
-                    Image(p,l,3) = 255;
+        if(isImage == 0)
+            Image = label2rgb(Image);
+            [r, c, ~] = size(Image);
+            val1 = Image(1,1,1);
+            val2 = Image(1,1,2);
+            val3 = Image(1,1,3);
+            for p = 1:r
+                for l = 1:c
+                    if(Image(p,l,1) == val1 && Image(p,l,2) == val2 && Image(p,l,3) == val3)
+                        Image(p,l,1) = 0;
+                        Image(p,l,2) = 0;
+                        Image(p,l,3) = 255;
+                    end
                 end
             end
+            [Image, map] = rgb2ind(Image, 2);
         end
-        [Image, map] = rgb2ind(Image, 2);
     end
     if(mirror ~= 0)
         if(mirror == 1)
