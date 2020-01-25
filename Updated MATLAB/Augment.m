@@ -1,14 +1,15 @@
 %Modify lines 2-7 as desired
-isImage = 0;
-isGray = 1;
-startFrameNumber = 726; %how many frames before the frame you start renaming
-degrees = 270; %degrees
+isImage = 1; %0 for labels, 1 for original images
+isGray = 1; %0 if not grayscale images, 1 for grayscale images
+startFrameNumber = 0; %how many frames before the frame you start renaming
+w = startFrameNumber;
+degrees = 90; %degrees
 widthlength = 256; %size of the resized image
 mirror = 0; %mirror over y axis = 1; mirror over x axis = 2; no mirror = 0
 combine = 0; %combines two images to create two new different images
 crop = 0;
-originalpath = '/Users/wilzh/Desktop/Fall 2019/Videos/296x296/Labels/';
-newpath = '/Users/wilzh/Desktop/';
+originalpath = 'C:\Users\Joel\Desktop\SPRING 2020\EE 496\Neural Network Training\OriginalImages_Mouse4981_Mouse5201\';
+newpath = 'C:\Users\Joel\Desktop\SPRING 2020\EE 496\Neural Network Training\Augmented Original Images\';
 
 type = 'Labels';
 if(isImage == 1)
@@ -24,8 +25,13 @@ elseif(mirror ~= 0)
         N = strcat(newpath, type, ', ', num2str(widthlength), 'x', num2str(widthlength), ', Rotated_', num2str(degrees), ', MirrorY');
     end
 else
-    N = strcat(newpath, type, ', ', num2str(widthlength), 'x', num2str(widthlength), ', Rotated_', num2str(degrees));
+    N = strcat(newpath, type, ', ', num2str(widthlength), 'x', num2str(widthlength), ',Rotated_', num2str(degrees));
 end
+
+if (crop == 1)
+    N = strcat(N, ', crop');
+end
+
 mkdir(N);
 for k = 1:length(files)
     lengthFile = length(files);
