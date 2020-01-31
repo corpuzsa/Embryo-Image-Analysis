@@ -64,7 +64,7 @@ for k=1:numFrames
 end
 
 name = convertCharsToStrings(name);
-array = [name realTime pixelArray(1) (pixelArray(numFrames)*pixel2real) name name name];
+array = [name realTime (pixelArray(1)*pixel2real) (pixelArray(numFrames)*pixel2real) name name name];
 output = [output; array];
 
 writematrix(output, 'embryo_results.csv');
