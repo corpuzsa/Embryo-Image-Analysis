@@ -26,6 +26,7 @@ pixelArray = zeros(1,numFrames);
 vidObj.CurrentTime = time_to_remember;
     
 for k=1:numFrames
+    count = 0;
     Image = readFrame(vidObj);
     Image = rgb2gray(Image);
     Image = imresize(Image, [256 256]);
