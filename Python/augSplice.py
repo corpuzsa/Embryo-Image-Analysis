@@ -1,4 +1,4 @@
-#Mirror Augmentation Script
+#Splice Augmentation Script
 
 from PIL import Image
 import os
