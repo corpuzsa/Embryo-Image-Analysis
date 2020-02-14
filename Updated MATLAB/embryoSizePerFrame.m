@@ -6,7 +6,8 @@ pixelToMicron = 0.3364;     %1x1 pixel = 0.3364 microns squared
 embryoSizePx = zeros(1,length(files));
 for i=1:length(files)
     Image = imread(files(i).name);
-    Image = im2bw(Image);   %not recommended function
+    Image = rgb2gray(Image);            %rgb to gray to binarize conversions produced inaccuracy of # of pixel labels
+    Image = imbinarize(Image,'adaptive','ForegroundPolarity','bright','Sensitivity',0.5);
     embryoSizePx(i) = sum(sum(Image));
 end
 
