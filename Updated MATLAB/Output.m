@@ -137,3 +137,8 @@ end
 toc
 %% Print results in csv file
 writematrix(output, 'embryo_results.csv');
+
+%% Plotting embryo growth rate
+figure(1)
+plot(1:length(pixelArray),pixelArray);
+title('Embryo Growth Rate by Frame'); xlabel('Frame Number'); ylabel('Area (Microns^2)');
