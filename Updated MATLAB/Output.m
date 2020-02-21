@@ -51,8 +51,8 @@ for i=1:numVideos
         % Convert image to correct size and type for CNN
         Image = readFrame(vidObj);
         Image = rgb2gray(Image);
-        timeArray(k) = timeCalc(Image);
         Image = imresize(Image, [imageSize imageSize]);
+        timeArray(k) = timeCalc(Image);
         if(k<10)
             filename=strcat(name,'/','00',num2str(k),'_',name,'.png');
         elseif(k>=10 && k<=99)
@@ -65,7 +65,7 @@ for i=1:numVideos
         imwrite(Image,filename,'png');
     
         [C,scores] = semanticseg(Image, net);
-        pixelArray(k) = sum(C(:) == "Embryo");
+        pixelArray(k) = sum(C(:) == "Embryo")*pixel2real;
         Image = labeloverlay(Image, C);
         if(k<10)
             filename=strcat(name,'_new','/','00',num2str(k),'_',name,'.png');
@@ -87,13 +87,20 @@ for i=1:numVideos
     rankSize(i,2) = pixelArray(numFrames);
     P = linearRegression(pixelArray, timeArray);
     
-%     figure(1)
-%     subplot(numVideos,1,i)
-%     plot
+    figure(1)
+    subplot(numVideos,1,i)
+    plot(timeArray,pixelArray);
+    hold on
+    plot(timeArray,(P(1)*timeArray)+P(2));
+    hold off
+    title(strcat('Video: ',name)); 
+    legend('Real Time Growth Rate','Average Growth Rate','Location','northwest');
+    xlabel('Time (hours)');
+    ylabel('Area (\mum^2)');
     
     rankGrowth(i,2) = P(1);
     name = convertCharsToStrings(name);
-    array = [name timeArray(numFrames) (pixelArray(1)*pixel2real) (pixelArray(numFrames)*pixel2real) 1 rankGrowth(i,2) 1];
+    array = [name timeArray(numFrames) pixelArray(1) pixelArray(numFrames) 1 rankGrowth(i,2) 1];
     output = [output; array];
     
     
@@ -136,9 +143,3 @@ end
 toc
 %% Print results in csv file
 writematrix(output, 'embryo_results.csv');
-
-%% Plotting embryo growth rate
-% figure(1)
-% % subplot(numVideos,
-% plot(1:length(pixelArray),pixelArray);
-% title('Embryo Growth Rate by Frame'); xlabel('Frame Number'); ylabel('Area (Microns^2)');

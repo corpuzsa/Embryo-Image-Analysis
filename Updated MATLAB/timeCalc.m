@@ -3,8 +3,6 @@ roi = [435 472 45 15];
 A = '0123456789';
 M = [];
 
-imagename = imread(imagename);
-imshow(imagename);
 I = imcrop(imagename,roi);
 I = imsharpen(I);
 I = imbinarize(I);
