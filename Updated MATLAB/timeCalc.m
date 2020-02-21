@@ -4,19 +4,15 @@ A = '0123456789';
 M = [];
 
 imagename = imread(imagename);
+imshow(imagename);
 I = imcrop(imagename,roi);
 I = imsharpen(I);
 I = imbinarize(I);
-
-I = bwmorph(I, 'thicken', 1);
-%imshow(I);
-I = imresize(I,1.7);
-%imshow(I);
-%I = regionprops(I,'BoundingBox','Area', 'Image');
-%I = I.Image;
+I = imresize(I,1.3);
+I = bwmorph(I, 'thicken', 3);
 I = bwmorph(I, 'bothat', 1);
-imshow(I);
-results = ocr(I,'CharacterSet', '.0123456789h', 'TextLayout','Line');
+I = bwmorph(I, 'tophat', 1);
+results = ocr(I,'CharacterSet', '.0123456789h', 'TextLayout','Block');
 m = results.Text;
 for r = 1:length(m)
     if ismember(m(1,r),A)

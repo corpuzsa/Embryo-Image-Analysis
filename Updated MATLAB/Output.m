@@ -65,14 +65,6 @@ for i=1:numVideos
         imwrite(Image,filename,'png');
     
         [C,scores] = semanticseg(Image, net);
-        %for l=1:imageSize
-        %    for i=1:imageSize
-        %        if(C(l,i) == "Embryo")
-        %            count = count + 1;
-        %        end
-        %    end
-        %end
-        %count = countcats(removecats(C, "Background"));
         pixelArray(k) = sum(C(:) == "Embryo");
         Image = labeloverlay(Image, C);
         if(k<10)
@@ -137,8 +129,3 @@ end
 toc
 %% Print results in csv file
 writematrix(output, 'embryo_results.csv');
-
-%% Plotting embryo growth rate
-figure(1)
-plot(1:length(pixelArray),pixelArray);
-title('Embryo Growth Rate by Frame'); xlabel('Frame Number'); ylabel('Area (Microns^2)');
