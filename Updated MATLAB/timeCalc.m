@@ -1,13 +1,21 @@
 function tB1 = timeCalc(imagename)
-roi = [452 472 35 15]; 
+roi = [435 472 45 15]; 
 A = '0123456789';
 M = [];
 
+imagename = imread(imagename);
 I = imcrop(imagename,roi);
 I = imsharpen(I);
 I = imbinarize(I);
+
 I = bwmorph(I, 'thicken', 1);
-I = imresize(I,1.5);
+%imshow(I);
+I = imresize(I,1.7);
+%imshow(I);
+%I = regionprops(I,'BoundingBox','Area', 'Image');
+%I = I.Image;
+I = bwmorph(I, 'bothat', 1);
+imshow(I);
 results = ocr(I,'CharacterSet', '.0123456789h', 'TextLayout','Line');
 m = results.Text;
 for r = 1:length(m)
