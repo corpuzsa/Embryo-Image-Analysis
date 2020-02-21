@@ -86,10 +86,17 @@ for i=1:numVideos
     
     rankSize(i,2) = pixelArray(numFrames);
     P = linearRegression(pixelArray, timeArray);
+    
+%     figure(1)
+%     subplot(numVideos,1,i)
+%     plot
+    
     rankGrowth(i,2) = P(1);
     name = convertCharsToStrings(name);
     array = [name timeArray(numFrames) (pixelArray(1)*pixel2real) (pixelArray(numFrames)*pixel2real) 1 rankGrowth(i,2) 1];
     output = [output; array];
+    
+    
 end
 
 %% If there are more than 1 videos...
@@ -129,3 +136,9 @@ end
 toc
 %% Print results in csv file
 writematrix(output, 'embryo_results.csv');
+
+%% Plotting embryo growth rate
+% figure(1)
+% % subplot(numVideos,
+% plot(1:length(pixelArray),pixelArray);
+% title('Embryo Growth Rate by Frame'); xlabel('Frame Number'); ylabel('Area (Microns^2)');
