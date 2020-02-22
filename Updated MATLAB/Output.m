@@ -10,6 +10,8 @@ load('net_all_combined_all.mat', 'net');
 %% Create empty variables
 %count = 0;
 files = [];
+bagofPArrays = {};
+bagofTArrays = {};
 %% Receive input on how many videos being processed and initialize
 numVideos = input("How many videos are you processing? ");
 rankGrowth = zeros(numVideos, 2);
@@ -24,6 +26,7 @@ for i=1:numVideos
     rankSize(i) = i;
 end
 tic
+
 %% For each video...
 for i=1:numVideos
     file = files(i);
@@ -45,6 +48,7 @@ for i=1:numVideos
     pixelArray = zeros(1,numFrames);
     timeArray = zeros(1,numFrames);
     vidObj.CurrentTime = time_to_remember;
+    
     %% For each image...
     for k=1:numFrames
         %count = 0;
@@ -103,6 +107,9 @@ for i=1:numVideos
     array = [name timeArray(numFrames) pixelArray(1) pixelArray(numFrames) 1 rankGrowth(i,2) 1];
     output = [output; array];
     
+    bagofPArrays{i}(:,:,1) = pixelArray;
+    bagofTArrays{i}(:,:,1) = timeArray;
+    
     
 end
 
@@ -139,6 +146,19 @@ if(numVideos ~= 1)
         output(1+rankSize(i), 5) = numVideos + 1 - i;
         output(1+rankGrowth(i), 7) = numVideos + 1 - i;
     end
+    
+    %% Make Combined Plot for Comparison
+    figure(2)
+    for i=1:numVideos
+        plot(bagofTArrays{i}(:,:,1),bagofPArrays{i}(:,:,1));
+        legend(strcat('Mouse: ',i),'Location','northwest');
+        hold on
+    end
+    title(strcat('Combined Plots'));
+    xlabel('Time (hours)');
+    ylabel('Area (\mum^2)');
+        
+    
 end
 toc
 %% Print results in csv file
